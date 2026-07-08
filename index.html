@@ -72,6 +72,51 @@ function makeUniquePairsWithDiagonal() {
 
 const TEST_TRIALS = makeUniquePairsWithDiagonal(); // 17 * 18 / 2 = 153 trials
 const AUDIO_FILES = Array.from({ length: N_STEPS }, (_, k) => audioPath(`${CONTINUUM}_${k + 1}`));
+AUDIO_FILES.push(
+  AUDIO_BASE_PATH + "2.wav",
+  AUDIO_BASE_PATH + "7.wav"
+);
+// --------------------------------------------------
+// Catch trials
+// --------------------------------------------------
+const CATCH_TRIALS = [
+  {
+    continuum: CONTINUUM,
+    stim1: "2",
+    stim2: "2",
+    stim1_step: "catch2",
+    stim2_step: "catch2",
+    correct_response: "same",
+    audio1: AUDIO_BASE_PATH + "2.wav",
+    audio2: AUDIO_BASE_PATH + "2.wav",
+    pair_id: "catch_2_2",
+    catch_trial: true
+  },
+  {
+    continuum: CONTINUUM,
+    stim1: "7",
+    stim2: "7",
+    stim1_step: "catch7",
+    stim2_step: "catch7",
+    correct_response: "same",
+    audio1: AUDIO_BASE_PATH + "7.wav",
+    audio2: AUDIO_BASE_PATH + "7.wav",
+    pair_id: "catch_7_7",
+    catch_trial: true
+  },
+  {
+    continuum: CONTINUUM,
+    stim1: "2",
+    stim2: "7",
+    stim1_step: "catch2",
+    stim2_step: "catch7",
+    correct_response: "different",
+    audio1: AUDIO_BASE_PATH + "2.wav",
+    audio2: AUDIO_BASE_PATH + "7.wav",
+    pair_id: "catch_2_7",
+    catch_trial: true
+  }
+];
 
 function getUrlParam(name) {
   return new URLSearchParams(window.location.search).get(name) || "";
@@ -185,7 +230,8 @@ function responseTrial(pair) {
   };
 }
 
-const randomizedPairs = jsPsych.randomization.shuffle(TEST_TRIALS);
+const ALL_TRIALS = TEST_TRIALS.concat(CATCH_TRIALS);
+const randomizedPairs = jsPsych.randomization.shuffle(ALL_TRIALS);
 randomizedPairs.forEach((pair, idx) => {
   timeline.push({
     type: jsPsychHtmlKeyboardResponse,
